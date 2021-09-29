@@ -50,7 +50,7 @@ namespace FirstUITest
             var actualFIO = _driver.FindElement(_FIOview).Text;
             while (actualFIO == "Загрузка...")
             {
-                Thread.Sleep(500);
+                actualFIO = _driver.FindElement(_FIOview).Text;
             } 
             Assert.AreEqual(_expectedFIO, actualFIO, "ФИО не корректно");
         }
