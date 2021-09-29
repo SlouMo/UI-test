@@ -19,7 +19,7 @@ namespace FirstUITest
         private readonly By _lodinField = By.XPath("//*[@id='login']");
         private readonly By _passwordField = By.XPath("//*[@id='password']");
         private readonly By _autorizationButton = By.XPath("//*[@type='submit']");
-        private readonly By _FIOview = By.XPath("//*[@class='profile']/child::p']");
+        private readonly By _FIOview = By.XPath("//*[@class='profile']/child::p");
 
 
 
@@ -30,7 +30,7 @@ namespace FirstUITest
             _driver = new OpenQA.Selenium.Chrome.ChromeDriver();
             _driver.Manage().Window.Maximize();
             _driver.Navigate().GoToUrl(_URL);
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(1200));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(600));
 
 
         }
@@ -39,7 +39,8 @@ namespace FirstUITest
         [Test]
         public void Test()
         {
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
+            _wait.Until(ExpectedConditions.ElementIsVisible(_autorizationButton));
 
             _driver.FindElement(_lodinField).SendKeys(_login);
             _driver.FindElement(_passwordField).SendKeys(_password);
@@ -47,7 +48,17 @@ namespace FirstUITest
             _wait.Until(ExpectedConditions.ElementIsVisible(_FIOview));
 
             var actualFIO = _driver.FindElement(_FIOview).Text;
-            Assert.AreEqual(_expectedFIO, actualFIO, "Не удалось найти ФИО или ФИО не корректно");
+            while (actualFIO == "Загрузка...")
+            {
+                Thread.Sleep(500);
+            } 
+            Assert.AreEqual(_expectedFIO, actualFIO, "ФИО не корректно");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _driver.Close();
         }
     }
 }
