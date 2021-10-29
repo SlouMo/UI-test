@@ -1,21 +1,23 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FirstUITest.PageObjects
 {
-    class AutorizationPageObject
+    class Login_PageObject
     {
-        private IWebDriver _webDriver;
-        private WebDriverWait _wait;
+        private readonly IWebDriver _webDriver;
+        private readonly WebDriverWait _wait;
 
         private readonly By _lodinField = By.XPath("//*[@id='login']");
         private readonly By _passwordField = By.XPath("//*[@id='password']");
         private readonly By _autorizationButton = By.XPath("//*[@type='submit']");
+        private readonly By _errorAutorizationText = By.XPath("//div[@class='errorMessage']");
 
-        public AutorizationPageObject(IWebDriver webDriver)
+        public Login_PageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
             _wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(600));
@@ -28,6 +30,21 @@ namespace FirstUITest.PageObjects
             _webDriver.FindElement(_lodinField).SendKeys(login);
             _webDriver.FindElement(_passwordField).SendKeys(password);
             _webDriver.FindElement(_autorizationButton).Click();
+
+            
+        }
+
+        public bool CheckErrorAutorization()
+        {
+            try
+            {
+                _webDriver.FindElement(_errorAutorizationText);
+                return false;
+            }
+            catch (NoSuchElementException)
+            {
+                return true;
+            }
         }
     }
 }
