@@ -2,10 +2,9 @@
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using UI_Test.UI_BaseClass;
 
-namespace FirstUITest.PageObjects
+namespace UI_Test.PageObjects
 {
     class Login_PageObject
     {
@@ -20,7 +19,7 @@ namespace FirstUITest.PageObjects
         public Login_PageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
-            _wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(600));
+            _wait = new WebDriverWait(_webDriver, TimeSpan.FromMilliseconds(BaseClass.TIMEOUT_MS));
         }
 
         public void Autoruzation(string login, string password)
@@ -34,6 +33,7 @@ namespace FirstUITest.PageObjects
             
         }
 
+        //Проверка на "Неверный логин или пароль"
         public bool CheckErrorAutorization()
         {
             try

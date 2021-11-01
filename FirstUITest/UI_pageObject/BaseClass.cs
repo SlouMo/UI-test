@@ -3,13 +3,17 @@ using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FirstUITest.UI_pageObject
+namespace UI_Test.UI_BaseClass
 {
+    
     class BaseClass
     {
-        public void WaitBusyEnd(int timeout, IWebDriver driver)
+        public const int TIMEOUT_MS = 300000;
+        
+        //Метод ждет окончание загрузки страницы
+        public void WaitBusyEnd(int timeoutMs, IWebDriver driver)
         {
-            DateTime end = DateTime.Now.AddMilliseconds(timeout);
+            DateTime end = DateTime.Now.AddMilliseconds(timeoutMs);
             while (DateTime.Now < end)
             {
                 try

@@ -1,5 +1,5 @@
-using FirstUITest.PageObjects;
-using FirstUITest.UI_pageObject;
+using UI_Test.PageObjects;
+using UI_Test.UI_BaseClass;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -38,15 +38,18 @@ namespace FirstUITest
         [Test]
         public void Test()
         {
-
-            var autorization = new Login_PageObject(_driver);
+            //Вызов метода для ввода логина и пароля
+            Login_PageObject autorization = new Login_PageObject(_driver);
             autorization.Autoruzation(_login, _password);
-            _wait.Until(
-               d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
-            //_driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+            
+            //Ожидание загрузки страницы
+            BaseClass baseClass = new BaseClass();
+            baseClass.WaitBusyEnd(BaseClass.TIMEOUT_MS, _driver);
 
+            //Проверка, что логин и пароль вверный
             if (autorization.CheckErrorAutorization())
             {
+                //Ожидание появление элемента с ФИО ии его сравнение
                 _wait.Until(ExpectedConditions.ElementIsVisible(_FIOview));
 
                 var actualFIO = _driver.FindElement(_FIOview).Text;
